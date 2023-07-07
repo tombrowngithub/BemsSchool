@@ -91,8 +91,8 @@ const courseInfo = {
     },
     fullstack_dev: {
         name: 'Fullstack Web Development',
-        diploma: "140,000",
-        certificate: "180,000"
+        diploma: "80,000",
+        certificate: "100,000"
     },
     frontend_dev: {
         name: 'Front-End Web Development',
@@ -101,8 +101,8 @@ const courseInfo = {
     },
     backend_dev: {
         name: 'Cyber Security',
-        diploma: "100,000",
-        certificate: "130,000"
+        diploma: "80,000",
+        certificate: "80,000"
     },
     graphic_design: {
         name: 'Graphic design & video editing',
@@ -207,8 +207,8 @@ const courseInfo = {
     },
     ip_pbx_and_voip: {
         name: 'IP PBX/PABX and VOIP Training',
-        diploma: "230,000",
-        certificate: "250,000"
+        diploma: "200,000",
+        certificate: "230,000"
     },
     google_sketchup_3D_rendering: {
         name: 'Google SketchUP 3D BIM & Rendering',
