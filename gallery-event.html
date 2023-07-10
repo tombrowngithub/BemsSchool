@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Network Engineering</title>
+    <title>Event & Gallery</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -88,20 +88,21 @@
         </h3>
     </div>
     <div class="container-sm">
-        <div class="row p-auto bg-light-subtle  shadow-sm p-3">
-            <h1>COMING SOON!</h1>
-<!--           <div class="row g-2 wow zoomIn mx-auto">-->
-<!--                <div class="col-md-3 shadow p-1">-->
-<!--                    <img src="/img/network-eng-cat.png" class="card-img-top img-fluid" alt="">-->
-<!--                    <h6 class="text-center text-primary mt-1">Introduction to Networking</h6>-->
-<!--                </div>-->
-<!--            </div>-->
-
-            <div></div>
-
+        <div class="row p-auto bg-light-subtle shadow-sm p-3">
+            <div class="row g-2 wow zoomIn mx-auto" id="imageGrid">
+                <!-- Images will be dynamically added here -->
+            </div>
         </div>
     </div>
 
+</div>
+
+<div class="container d-flex flex-column justify-content-center align-items-center">
+    <h2>Upload Image</h2>
+    <div>
+        <input class="btn-primary btn mb-3" type="file" id="fileUpload">
+        <button class="btn btn-primary text-center" onclick="uploadImage()">Upload</button>
+    </div>
 </div>
 
 <!-- Footer Start -->
@@ -213,6 +214,11 @@
 
 <!-- Template Javascript -->
 <script src="/js/main.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="firebase-config/firebase-config.js"></script>
+
 </body>
 
 </html>

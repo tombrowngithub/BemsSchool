@@ -43,12 +43,12 @@
         <div class="modal-content position-relative">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             <img src="img/technurture.jpg" alt="">
-            <a href="http://bit.ly/3Nyz20e" class="btn rounded-4 text-white glowing-button rotate-animation"
-                    style=" background:#943baf; position: absolute;
+            <a href="https://bit.ly/45YbHNY" class="btn rounded-4 text-white glowing-button rotate-animation"
+               style=" background:#943baf; position: absolute;
                     top: 68%; right: 0; margin-right: 55px;
                     margin-top: 100px; transform: rotate(-6deg);">
-            Enroll Now!!
-        </a>
+                Enroll Now!!
+            </a>
         </div>
     </div>
 </div>
@@ -106,32 +106,26 @@
 
 <!-- Carousel Start -->
 <div class="container-fluid p-0">
-    <!-- <img src="img/BITVs_logo.png" alt="Logo" class="rounded-circle bg-opacity-logo bitvs-logo BITVs-pc" /> -->
+<!--    <img src="img/BITVs_logo.png" alt="Logo" class="rounded-circle bg-opacity-logo bitvs-logo BITVs-pc" />-->
 
-    <div class="owl-carousel-item position-relative">
-        <video id="video-bg" loop autoplay muted class="video-bg">
-            <source src="img/video1.mp4" type="video/mp4">
-        </video>
+        <div class="owl-carousel-item position-relative">
+            <video id="video-bg" muted loop class="video-bg">
+                <source src="img/video.mp4" type="video/mp4">
+            </video>
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
+                 style="background: rgba(24, 29, 56, .7);">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-sm-10 col-lg-8">
 
-        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center"
-             style="background: rgba(24, 29, 56, .7);">
-            <div class="container">
-                <div class="row justify-content-start">
-                    <div class="col-sm-10 col-lg-8">
-                        <h1 class="display-1 text-white animated-text-mobile">
-                            <span class="fast-flicker">Visit</span>
-                            <span class="flicker">our</span>
-                            <span class="fast-flicker">learning</span>
-                            <span class="flicker">class</span>
-                            <span class="fast-flicker">Today!</span>
-                        </h1>
-                        <button id="muteButton" class="btn btn-light py-md-3 px-md-5 rounded-circle">Unmute</button>
+                            <button id="playbutton" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Play</button>
+                            <button class="btn btn-light py-md-3 px-md-5 animated slideInRight ">Mute</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-    </div>
 </div>
 <!-- Carousel End -->
 
@@ -534,7 +528,7 @@
                     </div>
                     <div class="text-center p-4 pb-0 py-3">
                         <a href="registration.html" class="mb-0 btn btn-primary rounded-pill my-font-size">Apply
-                            ₦80,000 <span class="original-price">₦150,000</span></a>
+                            ₦100,000 <span class="original-price">₦150,000</span></a>
                         <div class="mb-3">
                             <small class="fa fa-star text-primary"></small>
                             <small class="fa fa-star text-primary"></small>
@@ -562,7 +556,7 @@
                     </div>
                     <div class="text-center p-4 pb-0">
                         <a href="registration.html" class="mb-0 btn btn-primary rounded-pill my-font-size">Apply
-                            ₦80,000 <span class="original-price">₦150,000</span></a>
+                            ₦100,000 <span class="original-price">₦150,000</span></a>
                         <div class="mb-3">
                             <small class="fa fa-star text-primary"></small>
                             <small class="fa fa-star text-primary"></small>
@@ -591,7 +585,7 @@
                     </div>
                     <div class="text-center p-4 pb-0 ">
                         <a href="registration.html" class="mb-0 btn btn-primary rounded-pill my-font-size">Apply
-                            ₦80,000 <span class="original-price">₦150,000</span></a>
+                            ₦100,000 <span class="original-price">₦150,000</span></a>
                         <div class="mb-3">
                             <small class="fa fa-star text-primary"></small>
                             <small class="fa fa-star text-primary"></small>
@@ -929,19 +923,13 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const video = document.getElementById('video-bg');
-        const muteButton = document.getElementById('muteButton');
+        const playButton = document.getElementById('playButton');
 
-        muteButton.addEventListener('click', function () {
-            if (video.muted) {
-                video.muted = false;
-                muteButton.textContent = 'Mute';
-            } else {
-                video.muted = true;
-                muteButton.textContent = 'Unmute';
-            }
+        playButton.addEventListener('click', function () {
+            video.play();
+            playButton.style.display = 'none';
         });
     });
-
 </script>
 <!--video playback code-->
 
@@ -962,11 +950,11 @@
 <script src="js/main.js"></script>
 
 <!--Popup modal -->
-<script>
-    window.addEventListener('load', function () {
-        new bootstrap.Modal(document.getElementById('exampleModal')).show();
-    });
-</script>
+<!--<script>-->
+<!--    window.addEventListener('load', function () {-->
+<!--        new bootstrap.Modal(document.getElementById('exampleModal')).show();-->
+<!--    });-->
+<!--</script>-->
 <!--Popup modal End-->
 
 </body>
