@@ -11,12 +11,48 @@ let firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 // Get file input element
-let fileUpload = document.getElementById('fileUpload');
 let preview = document.getElementById('preview');
 let imageGrid = document.getElementById('imageGrid');
 
-// Function to upload file
+// Function to handle authentication and render content
+function checkPassword() {
+    let password = document.getElementById("password-input").value;
+
+    // Replace "your-password" with the actual password you want to use
+    if (password === "12345") {
+        // Password is correct, close the modal or perform any desired action
+        let passwordModal = bootstrap.Modal.getInstance(document.getElementById("password-page"));
+        passwordModal.hide();
+
+        // Generate and display the content
+        let contentPage = document.getElementById("content-page");
+        contentPage.classList.remove("hidden");
+
+        // Additional content generation and manipulation can be done here
+        contentPage.innerHTML = `
+      <h3 class="my-4 text-info shadow-sm">Make a post on BITVs Events & Gallery</h3>
+      <div class="d-flex flex-column">
+          <div class="mb-3">
+              <label for="fileUpload" class="form-label">Choose an image or video</label>
+              <input class="form-control" type="file" id="fileUpload">
+          </div>
+
+          <div class="form-floating mb-5">
+              <textarea class="form-control h-100" placeholder="Leave a comment here" id="Textarea"></textarea>
+              <label for="Textarea">Comments</label>
+          </div>
+          <button class="btn btn-primary text-center mb-4" onclick="uploadImage()">POST!</button>
+      </div>
+    `;
+    } else {
+        // Password is incorrect, display an error message or perform any desired action
+        alert("Incorrect password!!! Please Contact Administrator.");
+    }
+}
+
+// Function to upload image
 function uploadImage() {
+    let fileUpload = document.getElementById('fileUpload');
     let file = fileUpload.files[0];
 
     // Create a storage reference
@@ -29,26 +65,25 @@ function uploadImage() {
     task.on(
         'state_changed',
         function progress(snapshot) {
-            let percentage =
-                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             console.log('Upload is ' + percentage + '% done');
         },
         function error(err) {
             console.log('Upload error:', err);
-            alert(err)
+            alert(err);
         },
         function complete() {
             console.log('Upload complete');
-            window.location.reload()
-            retrieveImages();
+            loadImages();
+            window.location.href = '/gallery-event.html';
         }
     );
 }
 
-// Function to retrieve all images from Firebase Storage
-function retrieveImages() {
-    let storageRef = firebase.storage().ref('images');
 
+// Function to retrieve all images from Firebase Storage
+function loadImages() {
+    let storageRef = firebase.storage().ref('images');
     storageRef.listAll().then(function (result) {
         result.items.forEach(function (imageRef) {
             imageRef.getDownloadURL().then(function (url) {
@@ -71,10 +106,10 @@ function retrieveImages() {
     });
 }
 
-// Function to load images on page load
-function loadImages() {
-    retrieveImages();
-}
-
 // Load images on page load
-window.onload = loadImages;
+
+window.onload = function() {
+    loadImages();
+    let passwordModal = new bootstrap.Modal(document.getElementById("password-page"));
+    passwordModal.show();
+};
