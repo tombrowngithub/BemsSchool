@@ -41,7 +41,7 @@ function checkPassword() {
               <textarea class="form-control h-100" placeholder="Leave a comment here" id="Textarea"></textarea>
               <label for="Textarea">Comments</label>
           </div>
-          <button class="btn btn-primary text-center mb-4" onclick="uploadImage()">POST!</button>
+          <button class="btn btn-primary text-center mb-4" onclick="uploadFile()">UPLOAD POST</button>
       </div>
     `;
     } else {
@@ -50,13 +50,27 @@ function checkPassword() {
     }
 }
 
+
 // Function to upload image
-function uploadImage() {
+function uploadFile() {
     let fileUpload = document.getElementById('fileUpload');
     let file = fileUpload.files[0];
 
-    // Create a storage reference
-    let storageRef = firebase.storage().ref('images/' + file.name);
+    let storageRef, fileType, loadFunction;
+
+    // Check the file type
+    if (file.type.includes('image')) {
+        storageRef = firebase.storage().ref('images/' + file.name);
+        fileType = 'image';
+        loadFunction = loadImages;
+    } else if (file.type.includes('video')) {
+        storageRef = firebase.storage().ref('videos/' + file.name);
+        fileType = 'video';
+        loadFunction = loadVideos;
+    } else {
+        alert('Invalid file type. Only images and videos are allowed.');
+        return;
+    }
 
     // Upload file
     let task = storageRef.put(file);
@@ -74,7 +88,7 @@ function uploadImage() {
         },
         function complete() {
             console.log('Upload complete');
-            loadImages();
+            loadFunction();
             window.location.href = '/gallery-event.html';
         }
     );
@@ -106,10 +120,36 @@ function loadImages() {
     });
 }
 
-// Load images on page load
+// Function to retrieve all videos from Firebase storage
+function loadVideos() {
+    let storageRef = firebase.storage().ref('videos');
+    storageRef.listAll().then(function (result) {
+        result.items.forEach(function (videoRef) {
+            videoRef.getDownloadURL().then(function (url) {
+                let videoElement = document.createElement('video');
+                videoElement.src = url;
+                videoElement.classList.add('video-preview');
+                videoElement.classList.add('card-img-top');
+                videoElement.classList.add('img-fluid');
 
+                videoElement.controls = true;
+
+                let colElement = document.createElement('div');
+                colElement.classList.add('col-md-4', 'shadow', 'p-1');
+                colElement.appendChild(videoElement);
+
+                imageGrid.appendChild(colElement);
+            });
+        });
+    }).catch(function (error) {
+        console.log('Error retrieving videos:', error);
+    });
+}
+
+// Load images on page load
 window.onload = function() {
     loadImages();
+    loadVideos();
     let passwordModal = new bootstrap.Modal(document.getElementById("password-page"));
     passwordModal.show();
 };
