@@ -41,7 +41,14 @@ function checkPassword() {
               <textarea class="form-control h-100" placeholder="Leave a comment here" id="Textarea"></textarea>
               <label for="Textarea">Comments</label>
           </div>
-          <button class="btn btn-primary text-center mb-4" onclick="uploadFile()">UPLOAD POST</button>
+            <div class="d-flex flex-column justify-content-center">
+                <div style="height: 30px;"  class="progress" role="progressbar" aria-label="Default striped example" aria-valuemin="0" aria-valuemax="100">
+                    <div id="progress-bar" class="progress-bar progress-bar-animated" style="width: 0"></div>
+                 </div>
+                    <button id="uploadButton" class="btn btn-primary text-center mb-4" onclick="uploadFile()">UPLOAD POST</button>
+             </div>
+
+
       </div>
     `;
     } else {
@@ -79,8 +86,15 @@ function uploadFile() {
     task.on(
         'state_changed',
         function progress(snapshot) {
-            let percentage = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + percentage + '% done');
+            let percentage = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+
+            // Update the width of the progress bar element
+            let progressBar = document.getElementById('progress-bar');
+            let uploadButton = document.getElementById('uploadButton');
+
+            uploadButton.style.display = 'none';
+            progressBar.style.width = percentage + '%';
+            progressBar.innerText = percentage + '%';
         },
         function error(err) {
             console.log('Upload error:', err);
@@ -93,7 +107,6 @@ function uploadFile() {
         }
     );
 }
-
 
 // Function to retrieve all images from Firebase Storage
 function loadImages() {
@@ -147,7 +160,7 @@ function loadVideos() {
 }
 
 // Load images on page load
-window.onload = function() {
+window.onload = function () {
     loadImages();
     loadVideos();
     let passwordModal = new bootstrap.Modal(document.getElementById("password-page"));
