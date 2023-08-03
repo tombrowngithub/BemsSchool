@@ -100,64 +100,136 @@ function uploadFile() {
             console.log('Upload error:', err);
             alert(err);
         },
-        function complete() {
+        async function complete() {
             console.log('Upload complete');
+
+            // Retrieve the comment from the textarea
+            let commentTextArea = document.getElementById('Textarea');
+            let comment = commentTextArea.value;
+
+            // Save the comment in Firestore
+            await saveComment(file.name, comment);
+
             loadFunction();
-            window.location.href = '/gallery-event.html';
+            //window.location.href = '/gallery-event.html';
         }
     );
 }
 
+async function saveComment(filename, comment) {
+    try {
+        // Create a Firestore reference to the collection where you want to store the comments
+        const commentsCollectionRef = firebase.firestore().collection('comments');
+
+        // Create a new document in the comments collection
+        await commentsCollectionRef.doc(filename).set({
+            comment: comment,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        console.log('Comment saved successfully!');
+    } catch (error) {
+        console.error('Error saving comment:', error);
+    }
+}
+
+
+
+function getComment(filename) {
+    return new Promise((resolve, reject) => {
+        // Create a Firestore reference to the collection where the comments are stored
+        const commentsCollectionRef = firebase.firestore().collection('comments');
+
+        // Retrieve the comment document for the given filename
+        commentsCollectionRef
+            .doc(filename)
+            .get()
+            .then((doc) => {
+                if (doc.exists) {
+                    // Retrieve the comment from the document data
+                    const comment = doc.data().comment;
+                    resolve(comment);
+                } else {
+                    resolve(null); // Return null if no comment document exists
+                }
+            })
+            .catch((error) => {
+                console.error('Error retrieving comment:', error);
+                reject(error);
+            });
+    });
+}
+
+
+
 // Function to retrieve all images from Firebase Storage
 function loadImages() {
+    let imageGrid = document.getElementById('imageGrid');
+   // imageGrid.innerHTML = ''; // Clear the existing content
+
     let storageRef = firebase.storage().ref('images');
-    storageRef.listAll().then(function (result) {
-        result.items.forEach(function (imageRef) {
-            imageRef.getDownloadURL().then(function (url) {
+    storageRef.listAll().then(function(result) {
+        result.items.forEach(function(item) {
+            item.getDownloadURL().then(function(url) {
                 let imgElement = document.createElement('img');
                 imgElement.src = url;
-                imgElement.classList.add('image-preview');
-                imgElement.classList.add('card-img-top');
-                imgElement.classList.add('img-fluid');
+                imgElement.classList.add('image-preview', 'card-img-top', 'img-fluid');
 
                 let colElement = document.createElement('div');
                 colElement.classList.add('col-md-4', 'shadow', 'p-1');
                 colElement.appendChild(imgElement);
 
-                imageGrid.appendChild(colElement);
-                preview.appendChild(imgElement);
+                // Get the comment for the current image
+                getComment(item.name).then(function(comment) {
+                    if (comment) {
+                        let commentElement = document.createElement('p');
+                        commentElement.textContent = comment;
+                        colElement.appendChild(commentElement);
+                    }
+
+                    imageGrid.appendChild(colElement);
+                });
             });
         });
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.log('Error retrieving images:', error);
     });
 }
 
-// Function to retrieve all videos from Firebase storage
 function loadVideos() {
+    let imageGrid = document.getElementById('imageGrid');
+    //imageGrid.innerHTML = ''; // Clear the existing content
+
     let storageRef = firebase.storage().ref('videos');
-    storageRef.listAll().then(function (result) {
-        result.items.forEach(function (videoRef) {
-            videoRef.getDownloadURL().then(function (url) {
+    storageRef.listAll().then(function(result) {
+        result.items.forEach(function(item) {
+            item.getDownloadURL().then(function(url) {
                 let videoElement = document.createElement('video');
                 videoElement.src = url;
-                videoElement.classList.add('video-preview');
-                videoElement.classList.add('card-img-top');
-                videoElement.classList.add('img-fluid');
-
+                videoElement.classList.add('video-preview', 'card-img-top', 'img-fluid');
                 videoElement.controls = true;
 
                 let colElement = document.createElement('div');
                 colElement.classList.add('col-md-4', 'shadow', 'p-1');
                 colElement.appendChild(videoElement);
 
-                imageGrid.appendChild(colElement);
+                // Get the comment for the current video
+                getComment(item.name).then(function(comment) {
+                    if (comment) {
+                        let commentElement = document.createElement('p');
+                        commentElement.textContent = comment;
+                        colElement.appendChild(commentElement);
+                    }
+
+                    imageGrid.appendChild(colElement);
+                });
             });
         });
-    }).catch(function (error) {
+    }).catch(function(error) {
         console.log('Error retrieving videos:', error);
     });
 }
+
 
 // Load images on page load
 window.onload = function () {
